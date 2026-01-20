@@ -19,6 +19,20 @@ float boat2X = 0.5;
 bool isNightTrain=false;
 bool starsVisibleTrain =true;
 
+bool rainOn = false;
+float rainX[300];
+float rainY[300];
+float rainSpeed = 0.03f;
+
+bool snowOn = false;
+float snowX[300];
+float snowY[300];
+float snowSpeed = 0.012f;
+
+float smokeY = 0.10;
+bool isPaused = false;
+float globalSpeed = 1.0;
+
 //circle
 void drawCircle(float x, float y, float r)
 {
@@ -39,7 +53,6 @@ void drawBush(float x, float y)
     drawCircle(x - 0.02, y + 0.01, 0.024);
     drawCircle(x + 0.02, y + 0.01, 0.024);
 }
-
 void drawAllBushes()
 {
     drawBush(-0.6, -0.12);
@@ -63,7 +76,6 @@ void drawSky()
     glVertex2f(-1, 1);
     glEnd();
 }
-
 //river
 void drawRiver()
 {
@@ -75,8 +87,6 @@ void drawRiver()
     glVertex2f(-1, -0.07);
     glEnd();
 }
-
-
 //boat
 void drawBoat()
 {
@@ -85,7 +95,6 @@ void drawBoat()
 
     //boat 1
     float x = boat1X;
-
 //body
     glColor3f(0.6, 0.3, 0.1);
     glBegin(GL_POLYGON);
@@ -105,7 +114,6 @@ void drawBoat()
 
     //boat 2
     x = boat2X;
-
     glColor3f(0.6, 0.3, 0.1);
     glBegin(GL_POLYGON);
     glVertex2f(x - 0.08, y2);
@@ -122,7 +130,6 @@ void drawBoat()
     glVertex2f(x - 0.03, y2 + 0.03);
     glEnd();
 }
-
 //sun or moon
 void drawSunMoon()
 {
@@ -130,10 +137,8 @@ void drawSunMoon()
         glColor3f(1, 1, 1);
     else
     glColor3f(1, 1, 0);
-
     drawCircle(0.75, 0.8,0.06);
 }
-
 //star
 void drawStars()
 {
@@ -143,9 +148,7 @@ void drawStars()
         return;
     glColor3f(1, 1, 1);
     glPointSize(2);
-
     glBegin(GL_POINTS);
-
     glVertex2f(-0.8, 0.85);
     glVertex2f(-0.4, 0.9);
     glVertex2f(-0.1, 0.92);
@@ -155,7 +158,6 @@ void drawStars()
     glVertex2f(0.6, 0.83);
     glVertex2f(0.75, 0.91);
     glVertex2f(0.9, 0.86);
-
     glEnd();
 }
 
@@ -194,7 +196,6 @@ void drawHills()
 //field
 void drawField()
 {
-
     glColor3f(0.2, 0.7, 0.2);
     glBegin(GL_QUADS);
     glVertex2f(-1, -0.07);
@@ -252,18 +253,15 @@ void drawField()
     drawCircle(0.6 + trunkWidth/2 + 0.02, treeBaseY + trunkHeight, 0.04);
 
     drawAllBushes();
-
 }
 
 //rail line
 void drawRailLine()
 {
     glColor3f(0.3, 0.3, 0.3);
-
     glBegin(GL_LINES);
     glVertex2f(-1, -0.35);
     glVertex2f(1, -0.35);
-
     glVertex2f(-1, -0.42);
     glVertex2f(1, -0.42);
     glEnd();
@@ -276,7 +274,6 @@ void drawRailLine()
     }
     glEnd();
 }
-
 
 // train
 void drawTrain()
@@ -307,7 +304,6 @@ void drawTrain()
     glVertex2f(-0.82 + trainX,  0.01);
     glEnd();
 
-
     //coach 2
     glColor3f(1,1,0);
     glBegin(GL_QUADS);
@@ -328,7 +324,6 @@ void drawTrain()
     glVertex2f(-0.23 + trainX,  0.01);
     glVertex2f(-0.47 + trainX,  0.01);
     glEnd();
-
 
     //coach 3
     glColor3f(0.7,0.13,0.13);
@@ -351,7 +346,7 @@ void drawTrain()
     glVertex2f(-0.12 + trainX,  0.01);
     glEnd();
 
-//engine
+    //engine
     // body
     glColor3f(0.3,0,0.5);
     glBegin(GL_QUADS);
@@ -411,6 +406,7 @@ glVertex2f(0.37 + trainX, windowBottom);
 glVertex2f(0.37 + trainX, windowTop);
 glVertex2f(0.32 + trainX, windowTop);
 glEnd();
+
 }
 
 //cloud
@@ -421,7 +417,6 @@ void drawCloud(float x, float y)
     drawCircle(x + 0.06, y, 0.06);
     drawCircle(x + 0.12, y, 0.05);
 }
-
 //bird
 void drawBird(float x, float y)
 {
@@ -433,7 +428,6 @@ void drawBird(float x, float y)
     glVertex2f(x + 0.1, y);
     glEnd();
 }
-
 //grass
 void drawGrass()
 {
@@ -459,7 +453,6 @@ void drawGrass()
     }
     glEnd();
 }
-
 // Flower
 void drawFlower(float x, float y)
 {
@@ -470,7 +463,6 @@ void drawFlower(float x, float y)
     glVertex2f(x, y);
     glVertex2f(x, y + 0.05);
     glEnd();
-
     //yellow flower
     glColor3f(1, 1, 0);
     drawCircle(x, y + 0.06, 0.015);
@@ -479,7 +471,6 @@ void drawFlower(float x, float y)
     glColor3f(1, 0.5, 0);
     drawCircle(x, y + 0.06, 0.007);
 }
-
 void drawFlowers()
 {
     drawFlower(-0.8, -0.82);
@@ -489,12 +480,48 @@ void drawFlowers()
     drawFlower( 0.5, -0.84);
     drawFlower( 0.8, -0.82);
 }
+void drawRain()
+{
+    if(!rainOn) return;
+
+    glColor3f(0.6, 0.6, 1.0);
+    glLineWidth(2);
+    glBegin(GL_LINES);
+
+    for(int i = 0; i < 300; i++)
+    {
+        glVertex2f(rainX[i], rainY[i]);
+        glVertex2f(rainX[i] + 0.008f, rainY[i] - 0.05f);
+    }
+
+    glEnd();
+}
+void drawSnow()
+{
+    if(!snowOn) return;
+
+    glColor3f(1, 1, 1);
+    glPointSize(2);
+    glBegin(GL_POINTS);
+
+    for(int i = 0; i < 300; i++)
+    {
+        glVertex2f(snowX[i], snowY[i]);
+    }
+
+    glEnd();
+}
+void drawSmoke(float x)
+{
+    glColor4f(0.5, 0.5, 0.5, 0.6);
+    drawCircle(x + 0.42, smokeY, 0.02);
+    drawCircle(x + 0.45, smokeY + 0.03, 0.015);
+}
 
 //display
 void displayTrain()
 {
     glClear(GL_COLOR_BUFFER_BIT);
-
     drawSky();
     drawStars();
     drawSunMoon();
@@ -510,15 +537,15 @@ void displayTrain()
     drawCloud(cloudX1, 0.82);
     drawCloud(cloudX2, 0.78);
     drawCloud(cloudX3, 0.85);
-
     drawBird(birdX0, 0.70);
     drawBird(birdX1, 0.75);
     drawBird(birdX2, 0.72);
+    drawRain();
+    drawSnow();
+    drawSmoke(trainX);
 
     glutSwapBuffers();
 }
-
-
 
 //airport
 float planeX = -1.0f;
@@ -533,6 +560,7 @@ bool runwayLightOn = true;
 bool planeNavLightOn = true;
 bool tailLightOn = true;
 bool starsVisibleAirport = true;
+bool floodlightsOn = true;
 
 //SUN/MOON/STARS
 void drawSunMoonStars()
@@ -564,6 +592,40 @@ void drawSunMoonStars()
         drawCircle(0.75f, 0.6f, 0.1f);
     }
 }
+void drawFloodlight(float x)
+{
+    // Pole
+    glColor3f(0.4, 0.4, 0.4);
+    glBegin(GL_QUADS);
+        glVertex2f(x, -0.2);
+        glVertex2f(x + 0.02, -0.2);
+        glVertex2f(x + 0.02, 0.3);
+        glVertex2f(x, 0.3);
+    glEnd();
+    if(isNightAirport && floodlightsOn)
+    {
+        // Light cone (transparent effect)
+        glColor4f(1.0, 1.0, 0.8, 0.3);
+        glBegin(GL_TRIANGLES);
+            glVertex2f(x + 0.01, 0.3);
+            glVertex2f(x - 0.2, -0.6);
+            glVertex2f(x + 0.22, -0.6);
+        glEnd();
+
+        // Bright light point
+        glColor3f(1, 1, 0.9);
+        glPointSize(8);
+        glBegin(GL_POINTS);
+            glVertex2f(x + 0.01, 0.3);
+        glEnd();
+    }
+}
+void drawAllFloodlights()
+{
+    drawFloodlight(-0.7);
+    drawFloodlight(0.0);
+    drawFloodlight(0.7);
+}
 
 //CLOUD
 void drawCloudAirport(float x, float y)
@@ -584,7 +646,6 @@ void drawRunway()
         glVertex2f( 1,-0.2);
         glVertex2f(-1,-0.2);
     glEnd();
-
     // white strips
     glColor3f(1,1,1);
     for(float x=-1;x<1;x+=0.4)
@@ -596,7 +657,6 @@ void drawRunway()
             glVertex2f(x+runwayX,-0.35);
         glEnd();
     }
-
     // runway lights
     if(isNightAirport && runwayLightOn)
     {
@@ -608,7 +668,6 @@ void drawRunway()
         glEnd();
     }
 }
-
 //AIRPORT
 void drawWindow(float x, float y)
 {
@@ -622,7 +681,6 @@ void drawWindow(float x, float y)
         glVertex2f(x, y + 0.07);
     glEnd();
 }
-
 void drawAirport()
 {
     // Terminal 1
@@ -650,7 +708,6 @@ void drawAirport()
         glVertex2f(0.1, 0.05);
         glVertex2f(-0.15, 0.05);
     glEnd();
-
 
     drawWindow(-0.9, -0.05);
     drawWindow(-0.82, -0.05);
@@ -737,7 +794,6 @@ void drawApartmentArea()
     drawApartment(0.52f, -0.1f, 5);
     drawApartment(0.80f, -0.1f, 3);
 }
-
 //ROAD
 void drawRoad()
 {
@@ -799,6 +855,16 @@ void drawCar(float x, float y)
     drawCircle(0.05,-0.005,0.025);
     drawCircle(0.20,-0.005,0.025);
 
+    // Car headlights at night
+if(isNightAirport)
+{
+    glColor4f(1, 1, 0.8, 0.4);
+    glBegin(GL_TRIANGLES);
+        glVertex2f(0.0, 0.02);
+        glVertex2f(-0.35, -0.05);
+        glVertex2f(-0.35, 0.09);
+    glEnd();
+}
     glPopMatrix();
 }
 
@@ -872,7 +938,15 @@ void drawPlane()
         glVertex2f(0.133f, 0.035f);
     glEnd();
 
-    //NAVIGATION LIGHTS
+if(isNightAirport)
+{
+    glColor4f(1, 1, 0.8, 0.4);
+    glBegin(GL_TRIANGLES);
+        glVertex2f(0.426f, 0.105f);
+        glVertex2f(0.7f, 0.0f);
+        glVertex2f(0.7f, 0.2f);
+    glEnd();
+}
     if(planeNavLightOn)
     {
         glPointSize(6);
@@ -887,7 +961,6 @@ void drawPlane()
         glEnd();
     }
 
-    //TAIL BLINKING LIGHT
     if(tailLightOn)
     {
         glColor3f(1,0,0);
@@ -930,27 +1003,55 @@ void displayAirport()
     drawCloud(cloudX1,0.75);
     drawCloud(cloudX2,0.82);
     drawCloud(cloudX3,0.78);
-
     drawApartmentArea();
     drawRoad();
     drawCar(carX, -0.13f);
-
     drawRunway();
     drawAirport();
+    drawAllFloodlights();
     drawPlane();
+    drawRain();
+    drawSnow();
+
     glutSwapBuffers();
 }
 
 void update(int)
 {
+    if(isPaused)
+{
+    glutPostRedisplay();
+    glutTimerFunc(30, update, 0);
+    return;
+}
+if(rainOn)
+{
+    for(int i = 0; i < 300; i++)
+    {
+        rainY[i] -= rainSpeed;
+        if(rainY[i] < -1.0f)
+            rainY[i] = 1.0f + (i % 10) * 0.1f;
+    }
+}
+if(snowOn)
+{
+    for(int i = 0; i < 300; i++)
+    {
+        snowY[i] -= snowSpeed;
+
+        if(i % 2 == 0)
+            snowX[i] += 0.0005f;
+        else
+            snowX[i] -= 0.0005f;
+
+        if(snowY[i] < -1.0f)
+            snowY[i] = 1.0f + (i % 10) * 0.1f;
+    }
+}
     if(currentScene==1)
  {
-    planeX += 0.01f;
+    planeX += 0.01f * globalSpeed;
     planeY = -0.4 + 0.3*(planeX + 1.0f); // rises as it moves right
-
-
-    runwayX -= 0.03f;
-    if(runwayX < -0.4) runwayX = 0;
 
     cloudX1 += 0.002; if(cloudX1 > 1.3) cloudX1 = -1.3;
     cloudX2 += 0.002; if(cloudX2 > 1.3) cloudX2 = -1.3;
@@ -978,10 +1079,12 @@ if(carX < -1.2f)
     carX = 0.65f;
 
 }
-
 else{
-    trainX += 0.01;
+    trainX += 0.01 * globalSpeed;
     if(trainX > 1.5) trainX = -1.6;
+
+    smokeY += 0.01;
+if(smokeY > 0.4) smokeY = 0.10;
 
 // Cloud
 cloudX0 += 0.002; if(cloudX0 > 1.4) cloudX0 = -1.4;
@@ -1006,14 +1109,29 @@ if(starCounter > 15)
 {
     starsVisibleTrain = !starsVisibleTrain;
     starCounter = 0;
+    }
 }
-}
-
     glutPostRedisplay();
     glutTimerFunc(30, update, 0);
 
 }
 
+void initRain()
+{
+    for(int i = 0; i < 300; i++)
+    {
+        rainX[i] = -1.0f + (i % 30) * 0.07f;
+        rainY[i] = -1.0f + (i * 0.03f);
+    }
+}
+void initSnow()
+{
+    for(int i = 0; i < 300; i++)
+    {
+        snowX[i] = -1.0f + (i % 30) * 0.07f;
+        snowY[i] = -1.0f + (i * 0.025f);
+    }
+}
 void display()
 {
     if(currentScene == 1)
@@ -1021,7 +1139,6 @@ void display()
     else
         displayTrain();
 }
-
 
 void keyboardInput(unsigned char key,int x,int y)
 {
@@ -1038,6 +1155,32 @@ void keyboardInput(unsigned char key,int x,int y)
         isNightAirport = false;
         isNightTrain   = false;
     }
+    if(key == 'r' || key == 'R') {
+    rainOn = true;
+    snowOn = false;
+}
+
+    if(key == 's' || key == 'S')
+    rainOn = false;
+    snowOn = false;
+
+    if(key == 'p' || key == 'P')
+    isPaused = true;
+
+    if(key == 'c' || key == 'C')
+    isPaused = false;
+
+    if(key == '+')
+    globalSpeed += 0.2;
+
+    if(key == '-')
+    globalSpeed -= 0.2;
+
+    if(key == 'w' || key == 'W') {
+    snowOn = true;
+    rainOn = false;
+}
+if(globalSpeed < 0.2) globalSpeed = 0.2;
 }
 
 int main(int argc,char** argv)
@@ -1046,9 +1189,14 @@ int main(int argc,char** argv)
     glutInitWindowSize(900, 600);
     glutCreateWindow("Graphics project");
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboardInput);
     glutTimerFunc(30, update, 0);
+    initRain();
+    initSnow();
+
     glutMainLoop();
     return 0;
 
