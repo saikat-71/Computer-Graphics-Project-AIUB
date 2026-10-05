@@ -8,17 +8,6 @@ A 3D OpenGL and C++ computer graphics project created for the American Internati
 - **Interactive Graphics:** Multiple scene scripts and C++ entry points for modular 3D graphics rendering.
 - **Cross-Platform CodeBlocks Project:** Pre-configured Code::Blocks IDE project file (`.cbp`) for quick setup and execution.
 
-Requirements
-C++ Compiler: GCC / MinGW
-Libraries: OpenGL, GLUT / FreeGLUT
-IDE: Code::Blocks (recommended)
-
-How to Run
-Using Code::Blocks
-Open openglportable.cbp in Code::Blocks.
-Ensure GLUT / OpenGL libraries are configured in your compiler settings.
-Build and Run the project (F9).
-
 ## Project Structure
 
 ```text
